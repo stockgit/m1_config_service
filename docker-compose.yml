@@ -10,10 +10,3 @@ services:
 
     environment:
       SPRING_PROFILES_ACTIVE: docker
-
-    networks:
-      - microservice_network
-networks:
-  microservice_network:
-    name: microservice_network
-    driver: bridge
