@@ -1,24 +1,40 @@
-node('dind-node') {
-  withMaven(maven:'M3') {
-    stage('Checkout') {
-      git url: 'https://github.com/piomin/mewv2-microservices.git', credentialsId: 'piomin-github', branch: 'master'
+pipeline {
+    agent any
+    tools{
+            maven 'maven-3.5.2'
     }
-    stage('Build') {
-      dir('config-service') {
-        sh 'mvn clean install'
-        def pom = readMavenPom file:'pom.xml'
-        print pom.version
-        env.version = pom.version
-        currentBuild.description = "Release: ${env.version}"
-      }
-    }
-    stage('Image') {
-      dir ('config-service') {
-        docker.withRegistry('https://192.168.99.100:5000') {
-          def app = docker.build "piomin/config-service:${env.version}"
-          app.push()
+    stages {
+        stage('Pull From Git') {
+            steps {
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/stockgit/m1_config_service.git'
+            }
         }
-      }
+        stage('Test') {
+            steps {
+                // Build your Spring Boot application using Maven
+                echo 'Test with Maven'
+                //sh 'mvn clean install'
+                bat 'mvn clean test'
+            }
+        }
+        stage('Package') {
+            steps {
+                // Build your Spring Boot application using Maven
+                echo 'Package'
+                //sh 'mvn package'
+                bat 'mvn package'
+            }
+        }
+        stage('Deploy to Docker Compose') {
+            steps {
+                //sh 'docker-compose up --build -d'
+                bat 'docker-compose up --build -d'
+            }
+        }
+        stage('Success') {
+            steps {
+                echo 'Deploy Successfully'
+            }
+        }
     }
-  }
 }
