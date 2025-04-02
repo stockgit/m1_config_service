@@ -1,0 +1,45 @@
+server:
+  port: 8095
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discovery-service:8061/eureka/
+  instance:
+    hostname: report-service
+      
+logging:
+  pattern: 
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+
+springdoc:
+  packagesToScan: com.demo.services.report
+
+spring:
+  output:
+    ansi:
+      enabled: always
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    listener:
+      simple:
+        retry:
+          enabled: true
+          initial-interval: 2s # the first time will wait 2 seconds to try again
+          max-attempts: 3 # will try a maximum of 3 times
+          max-interval: 6s #the maximum interval between attempts is 6 seconds
+          multiplier: 2 #multiplies the range by 3
+  main:
+    allow-bean-definition-overriding: true
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
+
