@@ -13,14 +13,10 @@ For employee-service:
     mvn clean package
     docker build -t config-service .
 
-For department-service:
-    mvn clean package
-    docker build -t employee-service .
 
 Step 5: Create a Docker Network
     docker network create microservices-net
 
 Step 6: Run the Microservices
     docker run -d --net microservices-net --name config-service -p 8088:8088 config-service
-    docker run -d --net microservices-net --name employee-service -p 8080:8080 employee-service
 Step 7: Test the Microservices

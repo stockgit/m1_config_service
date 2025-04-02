@@ -7,5 +7,6 @@ services:
     ports:
       # Access http://localhost/
       - 8088:8088
+
     environment:
       SPRING_PROFILES_ACTIVE: docker

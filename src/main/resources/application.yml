@@ -1,13 +1,26 @@
 server:
   port: 8088
 
+
 spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/stockgit/m1_config_service.git
+          clone-on-start: true
+        bootstrap: true
+      enabled: true
+
+  application:
+    name: config-Server
+
   profiles:
     active: native
   output:
     ansi:
       enabled: always
 
-logging:
-  pattern:
-    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){blue} %clr(${LOG_LEVEL_PATTERN:-%5p}) %m%n"
+#:
+#  pattern:
+#    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){blue} %clr(${LOG_LEVEL_PATTERN:-%5p}) %m%n"
