@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Pull From Git') {
             steps {
-                git branch: 'master', changelog: false, poll: false, url: 'https://github.com/stockgit/m1_config_service.git'
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/stockgit/m1_config_service.git'
             }
         }
         stage('Test') {
