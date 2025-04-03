@@ -3,7 +3,7 @@ server:
 
 eureka:
   instance:
-    hostname: discovery-service
+    hostname: localhost
     prefer-ip-address: true
   client:
     registerWithEureka: false
