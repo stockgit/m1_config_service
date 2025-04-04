@@ -25,7 +25,13 @@ spring:
 #    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){blue} %clr(${LOG_LEVEL_PATTERN:-%5p}) %m%n"
 
 javamelody:
-  # Initialization parameters for JavaMelody
+  # Enable JavaMelody auto-configuration (optional, default: true)
+  enabled: true
+  # Data source names to exclude from monitoring (optional, comma-separated)
+  excluded-datasources: secretSource,topSecretSource
+  # Enable monitoring of Spring services and controllers (optional, default: true)
+  spring-monitoring-enabled: true
+  # Initialization parameters for JavaMelody (optional)
   # See: https://github.com/javamelody/javamelody/wiki/UserGuide#6-optional-parameters
   init-parameters:
     # log http requests
@@ -42,3 +48,32 @@ javamelody:
 
     # to change the default "/monitoring" path
     monitoring-path: /admin/performance
+
+#Actuator Endpoints
+#ตัวอย่าง Actuator Endpoints เบื้องต้น
+#http://localhost:8088/actuator/
+#GET :/autoconfig ดู auto-configuration report
+#GET: /configprops ดู configuration properties รวมค่า default config ด้วย
+#GET: /beans ดู context และ relationship ของ beans ใน application
+#GET: /dump ทำการ snapshot thread activity
+#GET: /env ดู environment properties ทั้งหมดใน application
+#GET: /env/{name} ดู environment properties แบบเจาะจงจากชื่อ
+#GET: /health ดู reports ของ health metrics application
+#GET: /info ดู custom information ต่างๆที่เกี่ยวกับ application
+#GET: /mappings ดู URI paths ที่ mapped กับ controllers
+#GET: /metrics ดูข้อมูลเช่น memory usage และ HTTP request counters
+#GET: /metrics/{name} ดู metric แบบเจาะจงจากชื่อ
+#GET: /trace ดู basic trace information
+#ซึ่ง Actuator endpoints ที่เห็นข้างบน บาง endpoint ก็จะเป็น Sensitive by default เพื่อที่จะเข้าถึงทุก endpoints เราต้องทำการ set ค่า management.security.enabled ให้เป็นค่า false ซะก่อน
+
+
+management:
+  security:
+    enabled: false
+  endpoints:
+    web:
+      exposure:
+        include: health, info, beans, loggers, trace, mappings, metrics, env
+  endpoint:
+    health:
+      show-details: always
